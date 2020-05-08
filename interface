@@ -77,6 +77,8 @@ class Stats(object):
 
         # 开辟一个新的进程进行检测, 然后发送图片给主线程
         # self.detector = DetectorThread(self.showImageSignal)
+        # 先禁用"停止检测"的按钮
+        self.ui.stopButton.setEnabled(False)
         # step 2: 点击“开始检测”按钮，开辟多线程进行数据的运算
         self.ui.startButton.clicked.connect(self.handleCalc)
         # step 3: 点击“停止检测”按钮，停止进行检测
@@ -84,6 +86,10 @@ class Stats(object):
 
     # 开始进行检测
     def handleCalc(self):
+        print("开始进行检测...")
+        # 禁用“开始检测”按钮，激活停止按钮
+        self.ui.startButton.setEnabled(False)
+        self.ui.stopButton.setEnabled(True)
         # 开辟一个新的进程进行检测, 然后发送图片给主线程
         self.detector = DetectorThread(self.showImageSignal)
         self.detector.start()
@@ -91,6 +97,9 @@ class Stats(object):
 
     # 停止进行检测
     def stopDetect(self):
+        # 禁用“停止检测”按钮，激活“开始检测”按钮
+        self.ui.stopButton.setEnabled(False)
+        self.ui.startButton.setEnabled(True)
         print("停止进行检测")
         # self.detector.stop()
         # 使用异常来进行检测
